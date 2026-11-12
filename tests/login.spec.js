@@ -13,10 +13,13 @@ for (const user of users) {
     await loginPage.login(user.username, user.password);
 
     if (user.expected === 'success') {
-      expect(await inventoryPage.isLoaded()).toBe(true);
-    } else {
-      const message = await loginPage.getErrorMessage();
-      expect(message).not.toBe('');
+        await expect(inventoryPage.title).toHaveText('Products');
+        expect(await inventoryPage.isLoaded()).toBe(true);
+
+    } else if (user.expected === 'error') {
+        const message = await loginPage.getErrorMessage();
+        expect(message).not.toBe('');
     }
+    
   });
 }
